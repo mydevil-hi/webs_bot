@@ -1,4 +1,6 @@
-aiogram==3.3.0
-google-generativeai
+aiogram
+fastapi
+uvicorn
 supabase
+google-generativeai
 requests
