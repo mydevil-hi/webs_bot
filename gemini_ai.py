@@ -6,20 +6,17 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel('gemini-1.5-flash')
 
-# قاموس لحفظ جلسات المحادثة لكل مستخدم (حتى تبقى الذاكرة شغالة أثناء الطلب)
+# قاموس لحفظ جلسات المحادثة لكل مستخدم لضمان بقاء الذاكرة والسياق أثناء الطلب
 user_sessions = {}
 
 def get_or_create_chat(user_id: int):
     """إنشاء أو جلب جلسة محادثة خاصة بكل مستخدم"""
     if user_id not in user_sessions:
-        # نبدأ محادثة جديدة مع تعليمات النظام الثابتة
         system_instruction = (
             "أنت مطور ويب خبير ومساعد ذكي. مهمتك هي مساعدة المستخدم في بناء مواقع وتطبيقات ويب كاملة. "
             "اكتب كود HTML متكامل (مع Tailwind CSS و JavaScript) بناءً على طلب المستخدم. "
-            "إذا احتجت إلى مفاتيح API خارجية (مثل Weather API أو غيرها)، اطلبها من المستخدم بوضوح في ردك أو اقترحها. "
-            "عندما يكتمل الكود أو يطلب المستخدم تصديره، اكتب الكود الصافي بداخل وسم كود مناسب."
+            "عندما يطلب المستخدم إنشاء موقع، قم بتوليد الكود الصافي للموقع."
         )
-        # نستخدم chat session لضمان تواصل الأفكار والذاكرة
         chat = model.start_chat(history=[])
         user_sessions[user_id] = chat
     return user_sessions[user_id]
@@ -29,3 +26,9 @@ def chat_with_ai(user_id: int, user_message: str) -> str:
     chat = get_or_create_chat(user_id)
     response = chat.send_message(user_message)
     return response.text
+
+def reset_user_chat(user_id: int):
+    """إعادةsetting المحادثة لأمر /newweb"""
+    if user_id in user_sessions:
+        del user_sessions[user_id]
+        
