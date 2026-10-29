@@ -13,8 +13,4 @@ primary_region = 'ams'
 
 [processes]
   app = "python main.py"
-
-[[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
-  cpus = 1
+  
