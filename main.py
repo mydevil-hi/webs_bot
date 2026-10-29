@@ -7,6 +7,11 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from gemini_ai import chat_with_ai
 from vercel_api import deploy_to_vercel
 from database import save_project_to_db, get_user_projects_from_db, delete_project_from_db
+from database import init_database
+
+# في بداية تشغيل البوت
+init_database()
+
 
 TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 
